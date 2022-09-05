@@ -1,6 +1,6 @@
 # Wasserstein Task Embedding for Measuring Task Similarities
 
-We provide the source code of WTE framework and demo for *NIST task group.
+This repository provides the implementation of [WTE](https://arxiv.org/abs/2208.11726) framework on CPU device. WTE is a model-agnostic task embedding framework for measuring task (dis)similarities in supervised classification problems, with linear computational cost with respect to number of tasks.
 
 ## Datasets: 
 - torchvision datasets: MNIST, EMNIST, FashionMNIST, KMNIST, USPS and CIFAR100
