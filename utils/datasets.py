@@ -103,8 +103,6 @@ class loaders_CIFAR():
         return train_loaders, test_loaders
 
     def create_cifar100_task(self, split, tasks, train=True, shuffle=False, bs=256):
-        # Don't use CIFAR10 mean/std to avoid leaking info
-        # Instead use (mean, std) of (0.5, 0.25)
         tmap, cmap = {}, {}
         for tid, task in enumerate(split):
             for lid, lab in enumerate(task):
@@ -112,7 +110,6 @@ class loaders_CIFAR():
         dataset = datasets.CIFAR100(
             root='dataset', train=train, download=False, transform=self.transform)
 
-        # Select a subset of the data-points, depending on the task
         task_labels = []
         for task_id in tasks:
             task_labels += split[task_id]
@@ -121,7 +118,6 @@ class loaders_CIFAR():
         dataset.targets = torch.tensor([cmap[dataset.targets[j]] for j in idx])
         dataset.data = dataset.data[idx]
 
-        # Create dataloader. Set workers to 0, since too few batches
         dataloader = DataLoader(
             dataset, batch_size=bs, shuffle=shuffle,
             num_workers=0, pin_memory=True)
@@ -133,8 +129,8 @@ class loaders_TIN():
     def __init__(self, seed=19):
         self.seed = seed
         self.transform = transforms.Compose([
-            transforms.Resize(256),  # Resize images to 256 x 256
-            transforms.CenterCrop(224),  # Center crop image
+            transforms.Resize(256), 
+            transforms.CenterCrop(224),
             transforms.ToTensor(),
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ])
